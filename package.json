@@ -1,0 +1,32 @@
+{
+  "name": "numh",
+  "version": "1.0.6",
+  "description": "number hunter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "numh": "./bin/main.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "encoding": "^0.1.12",
+    "iconv-lite": "^0.4.24",
+    "inquirer": "^6.2.0",
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.2.0",
+    "ora": "^3.0.0",
+    "perloin": "^1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zzzgit/numh.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zzzgit/numh/issues"
+  },
+  "homepage": "https://github.com/zzzgit/numh#readme"
+}
