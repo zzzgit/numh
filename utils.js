@@ -1,6 +1,11 @@
 const path = require("path")
 const fs = require("fs")
+const util = require('util')
 const mkdirp = require('mkdirp')
+
+
+const ensurePath = util.promisify(mkdirp)
+const appendFile = util.promisify(fs.appendFile)
 
 const getQandR = (dividend, divisor) => {
 	let remainder = dividend % divisor
@@ -43,22 +48,18 @@ const formatTimeRange = (range) => {
 	return seconds + "秒"
 }
 
-const appendFile = (str, file) => {
-	ensurePath(path.resolve(file, "../"))
-	fs.appendFile(file, str, "utf8", (err) => {
-		if (err) throw err
-	})
-}
-
-const ensurePath = (destination) => {
-	mkdirp(destination, function (err) {
-		if (err) {
-			throw err
+const appendToFile = (file, str) => {
+	return ensurePath(path.resolve(file, "../")).then(() => {
+		return appendFile(file, str, "utf8")
+	}).catch(e => {
+		if (e) {
+			throw e
 		}
 	})
 }
 
+
 module.exports = {
 	formatTimeRange,
-	appendFile
+	appendToFile
 }

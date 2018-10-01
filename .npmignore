@@ -12,6 +12,6 @@ npm-debug.log
 node_modules
 config.gypi
 *.orig
-package-lock.json (use shrinkwrap instead)
+package-lock.json
 .editorconfig
 .vscode
