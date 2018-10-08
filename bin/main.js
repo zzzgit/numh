@@ -9,7 +9,7 @@ const { version } = require('../package.json')
 console.log(`\r\n[numh][version]: ${version}\r\n`)
 
 let provs = []
-for(let key in area){
+for (let key in area) {
 	provs.push({
 		value: key,
 		name: area[key].name,
@@ -18,21 +18,31 @@ for(let key in area){
 
 inquirer.prompt([
 	{
+		name: 'service',
+		type: 'list',
+		message: '选择服务：',
+		choices: [{ value: "th", name: "挑号网" }, { value: "nine", name: "9元" }, { value: "king", name: "王卡" }],
+		default: "th",
+	},
+	{
 		name: 'province',
 		type: 'list',
 		message: '选择省份：',
 		choices: provs,
-		default: "gd",
+		default: "sz",
+		when: (answers) => {
+			return answers.service === "th"
+		},
 	},
 	{
 		name: 'city',
 		type: 'list',
 		message: '选择城市：',
 		choices: (answers) => {
-			return area[answers.province].children
+			return area[answers.province || "gd"].children
 		},
-		when: (answers)=>{
-			answers.isSpecial = area[answers.province].isSpecial
+		when: (answers) => {
+			answers.isSpecial = area[answers.province || "gd"].isSpecial
 			return !answers.isSpecial
 		},
 		default: 0,
@@ -43,16 +53,22 @@ inquirer.prompt([
 		message: '选择卡类：',
 		choices: tsps,
 		default: 0,
+		when: (answers) => {
+			return answers.service === "th"
+		},
 	},
 	{
 		name: 'package',
 		type: 'list',
 		message: '选择套餐：',
-		choices: (answers)=>{
+		choices: (answers) => {
 			let key = `${answers.province}${answers.isSpecial ? "" : ("." + answers.city)}.${answers.tsp}`
 			return pkgs[key]
 		},
 		when: (answers) => {
+			if (answers.service !== "th") {
+				return false
+			}
 			let key = `${answers.province}${answers.isSpecial ? "" : ("." + answers.city)}.${answers.tsp}`
 			if (!pkgs[key] || !pkgs[key].length) {
 				return false

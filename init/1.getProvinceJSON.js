@@ -34,7 +34,7 @@ wrapper.children().each(function (index, item) {
 			return null
 		}
 		item = $(item)
-		let matched = item.children().eq(0).attr("href").match(/dis=(\d+)/, "$1")
+		let matched = item.children().eq(0).attr("href").match(/dis=(\d+)/)	///^http:\/\/(\w{2,6})\..*dis=(\d+)/
 		if (!matched || !matched[1]) {	//直辖市出现在省里面
 			return null
 		}

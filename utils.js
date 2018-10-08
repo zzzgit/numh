@@ -2,7 +2,7 @@ const path = require("path")
 const fs = require("fs")
 const util = require('util')
 const mkdirp = require('mkdirp')
-
+const nodeFetch = require('node-fetch')
 
 const ensurePath = util.promisify(mkdirp)
 const appendFile = util.promisify(fs.appendFile)
@@ -58,8 +58,31 @@ const appendToFile = (file, str) => {
 	})
 }
 
+const checkRedirect = (url) => {
+	console.log(`[check-redirect]: ${url}`)
+	return nodeFetch(url, {
+		headers: {
+			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.65 Safari/537.36',
+		},
+		redirect: 'manaul',
+	}).then(resp => {
+		if (resp.ok) {
+			return url
+		}
+		if (resp.status === 301) {
+			return resp.headers.get("Location")
+		}
+		let err = new Error(resp.statusText)
+		err.code = resp.status
+		throw err
+	}).catch(function (err) {
+		throw err
+	})
+}
+
 
 module.exports = {
 	formatTimeRange,
-	appendToFile
+	appendToFile,
+	checkRedirect
 }
