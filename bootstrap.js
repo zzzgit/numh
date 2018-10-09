@@ -30,7 +30,8 @@ let run = function (entity, context) {	// 这个函数必须返回promise，不�
 				str += `${children.eq(4).text()}\t${children.eq(5).text()}\t${children.eq(6).text()}\r\n`
 			}
 		})
-		utils.appendToFile(path.join(os.homedir(), `Desktop/numh/${context.fileName}`), str).catch(err => {
+		context.counter++
+		utils.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter*50 / 60000 ) + "." + context.fileName}`), str).catch(err => {
 			if (err) throw err
 		})
 	}).catch(e => {
@@ -103,13 +104,14 @@ const boot = async (states) => {
 				type: perloin.type.increasing,
 				init: 1,
 				step: 1,
-				count: border
+				until: border
 			},
 		},
 		interval: states.interval,
 		context: {
 			fileName: `${states.province}.${states.city || "0"}.${states.tsp}.${states.package || "all"}.txt`,
-			states
+			states,
+			counter: 0
 		},
 		execute: run,
 	}

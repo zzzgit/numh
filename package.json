@@ -17,7 +17,7 @@
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.2.0",
     "ora": "^3.0.0",
-    "perloin": "^1.0.4"
+    "perloin": "^1.0.5"
   },
   "repository": {
     "type": "git",
