@@ -1,5 +1,8 @@
 const path = require('path')
+const fs = require("fs")
+const fsPromises = fs.promises
 const os = require('os')
+const excel = require("./excel.js")
 const ora = require('ora')
 const cheerio = require('cheerio')
 const template = require('url-template')
@@ -31,7 +34,7 @@ let run = function (entity, context) {	// 这个函数必须返回promise，不�
 			}
 		})
 		context.counter++
-		utils.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter*50 / 60000 ) + "." + context.fileName}`), str).catch(err => {
+		utils.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter * 50 / 60000) + "." + context.fileName}`), str).catch(err => {
 			if (err) throw err
 		})
 	}).catch(e => {
@@ -45,6 +48,44 @@ let record = (entity, context) => {
 		if (err) throw err
 	})
 	run(entity, context)
+}
+
+async function getHandle(path) {
+	let filehandle
+	try {
+		filehandle = await fsPromises.open(path, 'r')
+	} catch (e) {
+		throw e
+	}
+	return filehandle
+}
+
+const transferFile = async (file) => {
+	let handle = await getHandle(file)
+	handle.readFile({ encoding: "utf8" }).then(str => {
+		let results = []
+		let arr = str.split("\r\n")
+		arr.forEach(item => {
+			let segments = item.split("\t")
+			if (!segments || !segments.length || segments.length < 3) {
+				return null
+			}
+			let row = []
+			segments.forEach(seg => {
+				row.push(seg)
+			})
+			results.push(row)
+		})
+		return results
+	}).catch(e => {
+		throw e
+	}).then(results => {
+		let temp = excel.init()
+		excel.fill(results, temp)
+		excel.write(file + ".xlsx", temp)
+	}).catch(e => {
+		throw e
+	})
 }
 
 let generateDetector = (templetStr) => {
@@ -115,7 +156,21 @@ const boot = async (states) => {
 		},
 		execute: run,
 	}
-	perloin.run(plan)
+	perloin.run(plan).then(data => {
+		console.log(`[number-hunter]: 开始转换文件...`)
+		let folder = path.join(os.homedir(), `Desktop/numh/`)
+		fsPromises.readdir(folder, { encoding: "utf8" }).catch(e => {
+			throw e
+		}).then(files => {
+			files.forEach(file => {
+				if (file.includes("failed.txt")) {
+					return null
+				}
+				console.log(`[number-hunter]: ${file} --> ${file}.xlsx`)
+				transferFile(path.join(folder, `${file}`))
+			})
+		})
+	})
 }
 
 
