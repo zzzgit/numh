@@ -88,21 +88,22 @@ const transferFile = async (file) => {
 	})
 }
 
-let generateDetector = (templetStr) => {
-	return async (num) => {
-		let url = template.parse(templetStr).expand({
-			pageNo: num
-		})
-		return fetch(url).then(data => {
-			// 解析之
-			return true
-		}).catch(e => {
-			if (e.code === 500) {
-				return false
-			}
-		})
-	}
-}
+// let generateDetector = (templetStr) => {
+// 	return async (num) => {
+// 		let url = template.parse(templetStr).expand({
+// 			pageNo: num
+// 		})
+// 		return fetch(url).then(data => {
+// 			// 解析之
+// 			return true
+// 		}).catch(e => {
+// 			if (e.code === 500) {
+// 				return false
+// 			}
+// 		})
+// 	}
+// }
+
 
 const boot = async (states) => {
 	let urlTemplate = `http://${states.province}.tiaohao.com/${states.tsp}/?page_no={pageNo}`
@@ -156,14 +157,14 @@ const boot = async (states) => {
 		},
 		execute: run,
 	}
-	perloin.run(plan).then(data => {
+	perloin.run(plan).then(() => {
 		console.log(`[number-hunter]: 开始转换文件...`)
 		let folder = path.join(os.homedir(), `Desktop/numh/`)
 		fsPromises.readdir(folder, { encoding: "utf8" }).catch(e => {
 			throw e
 		}).then(files => {
 			files.forEach(file => {
-				if (file.includes("failed.txt")) {
+				if (file.includes("failed.txt") || !file.includes(`.txt`)) {
 					return null
 				}
 				console.log(`[number-hunter]: ${file} --> ${file}.xlsx`)
