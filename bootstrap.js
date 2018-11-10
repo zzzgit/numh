@@ -6,15 +6,14 @@ const excel = require("./excel.js")
 const ora = require('ora')
 const cheerio = require('cheerio')
 const template = require('url-template')
-const fetch = require("./fetch")
+const samael = require("samael")
 const perloin = require("perloin")
-const utils = require("./utils")
 // const rbb = require("./rbb.js")
 // const iconv = require('iconv-lite')
 
 
 let run = function (entity, context) {	// 这个函数必须返回promise，不管异步还是同步
-	return fetch(entity.url).then(text => {
+	return samael.fetch(entity.url).then(text => {
 		//let text = iconv.decode(text, 'gb2312')
 		const $ = cheerio.load(text)
 		let resource = $((context.states.tsp === "ltxuanhao") ? "div.page1 > ul:nth-child(2)>li>table tr[align=center]" : ".registItemsn>li>table tr[align=center]")
@@ -34,7 +33,7 @@ let run = function (entity, context) {	// 这个函数必须返回promise，不�
 			}
 		})
 		context.counter++
-		utils.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter * 50 / 60000) + "." + context.fileName}`), str).catch(err => {
+		samael.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter * 50 / 60000) + "." + context.fileName}`), str).catch(err => {
 			if (err) throw err
 		})
 	}).catch(e => {
@@ -44,7 +43,7 @@ let run = function (entity, context) {	// 这个函数必须返回promise，不�
 }
 
 let record = (entity, context) => {
-	utils.appendToFile(path.join(os.homedir(), `Desktop/numh/failed.txt`), entity.url + "\r\n").catch(err => {
+	samael.appendToFile(path.join(os.homedir(), `Desktop/numh/failed.txt`), entity.url + "\r\n").catch(err => {
 		if (err) throw err
 	})
 	run(entity, context)
@@ -114,7 +113,7 @@ const boot = async (states) => {
 		urlTemplate += `&zifei=${states.package}`
 	}
 	let spinner = ora('[number-hunter]: 正在探测域名映射...').start()
-	let domainWord = await utils.checkRedirect(`http://${states.province}.tiaohao.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
+	let domainWord = await samael.checkRedirect(`http://${states.province}.tiaohao.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
 		return text.match(/^http:\/\/(\w+)\./)[1]
 	}).catch(e => {
 		spinner.fail(`[number-hunter]: 检测域名失败！`)
@@ -125,7 +124,7 @@ const boot = async (states) => {
 	console.log(`[number-hunter]: urlTemplate '${urlTemplate}'`)
 	spinner = ora('[number-hunter]: 正在探测页数...').start()
 	// let border = await rbb.find(1, 99999, generateDetector(urlTemplate)) 两种探测方式
-	let border = await fetch(template.parse(urlTemplate).expand({ pageNo: 1 })).then(text => {
+	let border = await samael.fetch(template.parse(urlTemplate).expand({ pageNo: 1 })).then(text => {
 		const $ = cheerio.load(text)
 		const form = $("#form1")
 		const match = form.text().match(/共(\d+)页/)
@@ -137,7 +136,7 @@ const boot = async (states) => {
 		spinner.fail(`[number-hunter]: 检测页数失败！`)
 		throw e
 	})
-	spinner.info(`[number-hunter]: 一共${border}页，计划约需耗时${utils.formatTimeRange(border * states.interval)}`)
+	spinner.info(`[number-hunter]: 一共${border}页，计划约需耗时${samael.formatTimeRange(border * states.interval)}`)
 	let plan = {
 		name: `${states.province}.${states.city || "0"}.${states.tsp}.${states.package || "all"}`,
 		urlTemplate: urlTemplate,
@@ -158,9 +157,12 @@ const boot = async (states) => {
 		execute: run,
 	}
 	perloin.run(plan).then(() => {
+		if (typeof plan === "object"){
+			return null
+		}
 		console.log(`[number-hunter]: 开始转换文件...`)
 		let folder = path.join(os.homedir(), `Desktop/numh/`)
-		fsPromises.readdir(folder, { encoding: "utf8" }).catch(e => {
+		return fsPromises.readdir(folder, { encoding: "utf8" }).catch(e => {
 			throw e
 		}).then(files => {
 			files.forEach(file => {

@@ -18,7 +18,8 @@
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.2.0",
     "ora": "^3.0.0",
-    "perloin": "^1.0.5"
+    "perloin": "^1.0.5",
+    "samael": "^1.0.2"
   },
   "repository": {
     "type": "git",
