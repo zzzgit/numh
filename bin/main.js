@@ -77,6 +77,24 @@ inquirer.prompt([
 		},
 	},
 	{
+		name: 'price',
+		type: 'list',
+		message: '选择价格区间：',
+		choices: (answers) => {
+			return [
+				{ name: "全部", value: -1 }, 
+				{ name: "0-200", value: "1st" }, 
+				{ name: "200-500", value: "2st" }, 
+				{ name: "500-1000", value: "3st" }, 
+				{ name: "1000-2000", value: "4st" }, 
+				{ name: "2000-5000", value: "5st" }, 
+				{ name: "5000-10000", value: "6st" }, 
+				{ name: "10000以上", value: "8st" }, 
+			]
+		},
+		default: -1
+	},
+	{
 		name: 'interval',
 		type: 'input',
 		message: '任务间隔时间（秒）：',
