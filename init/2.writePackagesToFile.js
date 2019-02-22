@@ -39,7 +39,7 @@ let hand = function (task, context) {	// 这个函数必须返回promise，不�
 
 let lastPlan = Promise.resolve()
 for (let provCode in areas) {
-	let taskInterval = 1.3
+	let taskInterval = 1.5
 	let item = areas[provCode]
 	if (item.isSpecial) {
 		let plan = {
