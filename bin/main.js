@@ -4,6 +4,7 @@ const inquirer = require('inquirer')
 const area = require("./data/area.js")
 const tsps = require("./data/tsp.js")
 const pkgs = require("./data/pkgs.js")
+const prefixs = require("./data/prefix.js")
 
 const { version } = require('../package.json')
 console.log(`\r\n[numh][version]: ${version}\r\n`)
@@ -58,6 +59,16 @@ inquirer.prompt([
 		},
 	},
 	{
+		name: 'prefix',
+		type: 'list',
+		message: '选择号段：',
+		choices: (answers) => {
+			console.log(answers.tsp)
+			return prefixs[answers.tsp]
+		},
+		default: -1,
+	},
+	{
 		name: 'package',
 		type: 'list',
 		message: '选择套餐：',
@@ -80,7 +91,7 @@ inquirer.prompt([
 		name: 'price',
 		type: 'list',
 		message: '选择价格区间：',
-		choices: (answers) => {
+		choices: () => {
 			return [
 				{ name: "全部", value: -1 }, 
 				{ name: "0-200", value: "1st" }, 

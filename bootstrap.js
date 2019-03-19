@@ -115,6 +115,9 @@ const boot = async (states) => {
 	if (states.price!==-1) {
 		urlTemplate += `&jiage=${states.price}`
 	}
+	if (states.prefix!==-1) {
+		urlTemplate += `&haoduan=${states.prefix}`
+	}
 	let spinner = ora('[number-hunter]: 正在探测域名映射...').start()
 	let domainWord = await samael.checkRedirect(`http://${states.province}.tiaohao.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
 		return text.match(/^http:\/\/(\w+)\./)[1]
