@@ -10,7 +10,7 @@ wrapper.children().each(function (index, item) {
 	if (index === 0) {	// 直辖市
 		item.children("dd").each(function (index, item) {
 			item = $(item)
-			let matched = item.children("a").eq(0).attr("href").match(/\/\/(\w+)\.haoma/, "$1")
+			let matched = item.children("a").eq(0).attr("href").match(/\/\/(\w+)\.1778/, "$1")
 			provs[matched[1]] = {
 				name: item.text(),
 				// children: [],
@@ -21,7 +21,7 @@ wrapper.children().each(function (index, item) {
 	}
 	let children = item.children()
 	let provName = children.eq(0).text()
-	let code = children.eq(1).children().eq(0).attr("href").match(/\/\/(\w+)\.haoma/, "$1")[1]
+	let code = children.eq(1).children().eq(0).attr("href").match(/\/\/(\w+)\.1778/, "$1")[1]
 	provs[code] = {
 		name: provName,
 		children: []

@@ -103,7 +103,7 @@ const transferFile = async (file) => {
 
 const boot = async (states) => {
 	// 51.asp?  numcategory=0   birth=    
-	let urlTemplate = `http://${states.province}.haoma.com/io/5.asp?cnt=50&page_no={pageNo}&lanmu=${states.tsp}`
+	let urlTemplate = `http://${states.province}.1778.com/io/5.asp?cnt=50&page_no={pageNo}&lanmu=${states.tsp}`
 	if (!states.isSpecial) {
 		urlTemplate += `&dis=${states.city}`
 	}
@@ -117,7 +117,7 @@ const boot = async (states) => {
 		urlTemplate += `&haoduan=${states.prefix}`
 	}
 	let spinner = ora('[number-hunter]: 正在探测域名映射...').start()
-	// let domainWord = await samael.checkRedirect(`http://${states.province}.haoma.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
+	// let domainWord = await samael.checkRedirect(`http://${states.province}.1778.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
 	// 	return text.match(/^http:\/\/(\w+)\./)[1]
 	// }).catch(e => {
 	// 	spinner.fail(`[number-hunter]: 检测域名失败！`)

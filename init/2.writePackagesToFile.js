@@ -11,7 +11,7 @@ let hand = function (task, context) {	// 这个函数必须返回promise，不�
 	return samael.fetch(task.url).then(text => {
 		const $ = cheerio.load(text)
 		let temp = $("body > div.wrap > div.r > div.attribute-box div.sl-value div.sl-v-tab div.trig-item")
-		temp = temp.children().filter((index, item) => {
+		temp = temp.filter((index, item) => {
 			item = $(item)
 			return item.text().includes("默认套餐") || item.text().includes("资费套餐")
 		})
@@ -43,7 +43,7 @@ for (let provCode in areas) {
 	if (item.isSpecial) {
 		let plan = {
 			name: `${provCode}`,
-			urlTemplate: `http://${provCode}.haoma.com/xh/?lanmu={tsp}`,
+			urlTemplate: `http://${provCode}.1778.com/xh/?lanmu={tsp}`,
 			urlPhases: {
 				tsp: {
 					type: perloin.type.iterating,
@@ -58,11 +58,11 @@ for (let provCode in areas) {
 	} else {
 		areas[provCode].children.forEach(city => {
 			lastPlan = lastPlan.then(() => {
-				return samael.checkRedirect(`http://${provCode}.haoma.com/xh/?dis=${city.value}&lanmu=${tsp[0].value}`).then(url => url.match(/^http:\/\/(\w+)\./)[1])
+				return samael.checkRedirect(`http://${provCode}.1778.com/xh/?dis=${city.value}&lanmu=${tsp[0].value}`).then(url => url.match(/^http:\/\/(\w+)\./)[1])
 			}).then((domain) => {
 				let plan = {
 					name: `${domain}.${city.name}`,
-					urlTemplate: `http://${domain}.haoma.com/xh/?dis=${city.value}&lanmu={tsp}`,
+					urlTemplate: `http://${domain}.1778.com/xh/?dis=${city.value}&lanmu={tsp}`,
 					urlPhases: {
 						tsp: {
 							type: perloin.type.iterating,
