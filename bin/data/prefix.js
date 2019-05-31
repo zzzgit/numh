@@ -33,14 +33,14 @@ module.exports = {
 		{ name: "155", value: 155 }
 
 	],
-	"2": [
-		{ name: "全部", value: -1 },
-		{ name: "199", value: 199 },
-		{ name: "189", value: 189 },
-		{ name: "181", value: 181 },
-		{ name: "177", value: 177 },
-		{ name: "173", value: 173 },
-		{ name: "153", value: 153 },
-		{ name: "133", value: 133 }
-	]
+	// "2": [
+	// 	{ name: "全部", value: -1 },
+	// 	{ name: "199", value: 199 },
+	// 	{ name: "189", value: 189 },
+	// 	{ name: "181", value: 181 },
+	// 	{ name: "177", value: 177 },
+	// 	{ name: "173", value: 173 },
+	// 	{ name: "153", value: 153 },
+	// 	{ name: "133", value: 133 }
+	// ]
 }

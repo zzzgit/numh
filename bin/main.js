@@ -66,6 +66,9 @@ inquirer.prompt([
 			console.log(answers.tsp)
 			return prefixs[answers.tsp]
 		},
+		when: () => {
+			return false
+		},
 		default: -1,
 	},
 	{
@@ -94,13 +97,14 @@ inquirer.prompt([
 		choices: () => {
 			return [
 				{ name: "全部", value: -1 }, 
-				{ name: "0-200", value: "1st" }, 
-				{ name: "200-500", value: "2st" }, 
-				{ name: "500-1000", value: "3st" }, 
-				{ name: "1000-2000", value: "4st" }, 
-				{ name: "2000-5000", value: "5st" }, 
-				{ name: "5000-10000", value: "6st" }, 
-				{ name: "10000以上", value: "8st" }, 
+				{ name: "0-200", value: "1" }, 
+				{ name: "200-500", value: "2" }, 
+				{ name: "500-1000", value: "3" }, 
+				{ name: "1000-2000", value: "4" }, 
+				{ name: "2000-5000", value: "5" }, 
+				{ name: "5000-10000", value: "6" }, 
+				{ name: "10000-20000", value: "7" }, 
+				{ name: "20000以上", value: "8" }, 
 			]
 		},
 		default: -1
