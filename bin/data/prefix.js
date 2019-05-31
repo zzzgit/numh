@@ -1,5 +1,5 @@
 module.exports = {
-	ydxuanhao: [
+	"0": [
 		{ name: "全部", value: -1 },
 		{ name: "198", value: 198 },
 		{ name: "138", value: 138 },
@@ -21,7 +21,7 @@ module.exports = {
 		{ name: "147", value: 147 },
 		{ name: "1390", value: 1390 }
 	],
-	ltxuanhao: [
+	"1": [
 		{ name: "全部", value: -1 },
 		{ name: "186", value: 186 },
 		{ name: "186", value: 186 },
@@ -33,7 +33,7 @@ module.exports = {
 		{ name: "155", value: 155 }
 
 	],
-	cdma: [
+	"2": [
 		{ name: "全部", value: -1 },
 		{ name: "199", value: 199 },
 		{ name: "189", value: 189 },

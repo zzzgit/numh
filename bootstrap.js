@@ -4,7 +4,7 @@ const fsPromises = fs.promises
 const os = require('os')
 const excel = require("./excel.js")
 const ora = require('ora')
-const cheerio = require('cheerio')
+// const cheerio = require('cheerio')
 const template = require('url-template')
 const samael = require("samael")
 const perloin = require("perloin")
@@ -15,21 +15,18 @@ const perloin = require("perloin")
 let run = function (entity, context) {	// 这个函数必须返回promise，不管异步还是同步
 	return samael.fetch(entity.url).then(text => {
 		//let text = iconv.decode(text, 'gb2312')
-		const $ = cheerio.load(text)
-		let resource = $((context.states.tsp === "ltxuanhao") ? "div.page1 > ul:nth-child(2)>li>table tr[align=center]" : ".registItemsn>li>table tr[align=center]")
-		if (!resource || !resource.length) {
+		let arr = text.split("|")
+		if (!arr.length) {
 			// throw new Error(`[perloin][document]: no data!`)
 			console.log(`[number-hunter]: 该页无数据： ${entity.url}`)	// 为何显示不出来
 			return null
 		}
+		arr.shift()
 		let str = ""
-		resource.each((index, item) => {
-			let children = $(item).children()
-			if (children.eq(3).find("a")) {
-				str += `${children.eq(0).text()}\t${children.eq(1).text()}\t${children.eq(2).text()}\r\n`
-			}
-			if (children.eq(7).find("a")) {
-				str += `${children.eq(4).text()}\t${children.eq(5).text()}\t${children.eq(6).text()}\r\n`
+		arr.forEach((item) => {
+			const data = item.split(",")
+			if(data[5]==="0"){
+				str += `${data[0]}\t${data[4]}\t${+data[3]+(+data[4])}\r\n`
 			}
 		})
 		context.counter++
@@ -105,7 +102,8 @@ const transferFile = async (file) => {
 
 
 const boot = async (states) => {
-	let urlTemplate = `http://${states.province}.tiaohao.com/${states.tsp}/?page_no={pageNo}`
+	// 51.asp?  numcategory=0   birth=    
+	let urlTemplate = `http://${states.province}.haoma.com/io/5.asp?cnt=50&page_no={pageNo}&lanmu=${states.tsp}`
 	if (!states.isSpecial) {
 		urlTemplate += `&dis=${states.city}`
 	}
@@ -119,25 +117,20 @@ const boot = async (states) => {
 		urlTemplate += `&haoduan=${states.prefix}`
 	}
 	let spinner = ora('[number-hunter]: 正在探测域名映射...').start()
-	let domainWord = await samael.checkRedirect(`http://${states.province}.tiaohao.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
-		return text.match(/^http:\/\/(\w+)\./)[1]
-	}).catch(e => {
-		spinner.fail(`[number-hunter]: 检测域名失败！`)
-		throw e
-	})
+	// let domainWord = await samael.checkRedirect(`http://${states.province}.haoma.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
+	// 	return text.match(/^http:\/\/(\w+)\./)[1]
+	// }).catch(e => {
+	// 	spinner.fail(`[number-hunter]: 检测域名失败！`)
+	// 	throw e
+	// })
 	spinner.info(`[number-hunter]: 检测域名成功！`)
-	urlTemplate = urlTemplate.replace(/^http:\/\/\w+\./, `http://${domainWord}.`)
+	urlTemplate = urlTemplate.replace(/^http:\/\/\w+\./, `http://${states.province}.`)
 	console.log(`[number-hunter]: urlTemplate '${urlTemplate}'`)
 	spinner = ora('[number-hunter]: 正在探测页数...').start()
 	// let border = await rbb.find(1, 99999, generateDetector(urlTemplate)) 两种探测方式
 	let border = await samael.fetch(template.parse(urlTemplate).expand({ pageNo: 1 })).then(text => {
-		const $ = cheerio.load(text)
-		const form = $("#form1")
-		const match = form.text().match(/共(\d+)页/)
-		if (!match || !match.length || !match[1]) {
-			return 1
-		}
-		return +(form.text().match(/共(\d+)页/)[1])
+		let page = text.replace(/\|.+/, "")
+		return +page || 1
 	}).catch(e => {
 		spinner.fail(`[number-hunter]: 检测页数失败！`)
 		throw e
