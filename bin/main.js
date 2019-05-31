@@ -63,7 +63,6 @@ inquirer.prompt([
 		type: 'list',
 		message: '选择号段：',
 		choices: (answers) => {
-			console.log(answers.tsp)
 			return prefixs[answers.tsp]
 		},
 		when: () => {
@@ -129,6 +128,7 @@ inquirer.prompt([
 	console.error(`[numh][inquirer]: error occurred when selecting menu:`, e)
 	process.exit()
 }).then(answers => {
+	answers.prefix = -1
 	if (!answers.confirm) {
 		return process.exit()
 	}
