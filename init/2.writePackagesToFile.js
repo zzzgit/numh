@@ -19,10 +19,13 @@ let hand = function (task, context) {	// 这个函数必须返回promise，不�
 		let str = ""
 		wrapper.children().each((index, item) => {
 			item = $(item)
-			if (item.hasClass("curr")) {
+			// if (item.hasClass("curr")) {
+			// 	return true
+			// }
+			if (item.data("father") != task.phase.tsp) {
 				return true
 			}
-			str += `\t{ value: ${item.data("val")}, `
+			str += `\t{ value: ${item.data("val")},\t`
 			str += `name: "${item.text()}" },\r\n`
 		})
 		let isSpecial = areas[context.provCode].isSpecial

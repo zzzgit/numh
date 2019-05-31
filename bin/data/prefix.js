@@ -19,6 +19,7 @@ module.exports = {
 		{ name: "152", value: 152 },
 		{ name: "150", value: 150 },
 		{ name: "147", value: 147 },
+		{ name: "170", value: 170 },
 		{ name: "1390", value: 1390 }
 	],
 	"1": [
@@ -30,17 +31,19 @@ module.exports = {
 		{ name: "130", value: 130 },
 		{ name: "131", value: 131 },
 		{ name: "132", value: 132 },
-		{ name: "155", value: 155 }
-
+		{ name: "155", value: 155 },
+		{ name: "156", value: 156 },
+		{ name: "170", value: 170 },
+ 
 	],
-	"2": [
-		{ name: "全部", value: -1 },
-		{ name: "199", value: 199 },
-		{ name: "189", value: 189 },
-		{ name: "181", value: 181 },
-		{ name: "177", value: 177 },
-		{ name: "173", value: 173 },
-		{ name: "153", value: 153 },
-		{ name: "133", value: 133 }
-	]
+	// "2": [
+	// 	{ name: "全部", value: -1 },
+	// 	{ name: "199", value: 199 },
+	// 	{ name: "189", value: 189 },
+	// 	{ name: "181", value: 181 },
+	// 	{ name: "177", value: 177 },
+	// 	{ name: "173", value: 173 },
+	// 	{ name: "153", value: 153 },
+	// 	{ name: "133", value: 133 }
+	// ]
 }
