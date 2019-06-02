@@ -22,7 +22,7 @@ inquirer.prompt([
 		name: 'service',
 		type: 'list',
 		message: '选择服务：',
-		choices: [{ value: "th", name: "挑号网" }, { value: "nine", name: "9元" }, { value: "king", name: "王卡" }],
+		choices: [{ value: "th", name: "号码网" }, { value: "nine", name: "9元" }, { value: "king", name: "王卡" }],
 		default: "th",
 	},
 	{
