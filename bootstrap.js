@@ -117,14 +117,14 @@ const boot = async (states) => {
 		urlTemplate += `&haoduan=${states.prefix}`
 	}
 	let spinner = ora('[number-hunter]: 正在探测域名映射...').start()
-	// let domainWord = await samael.checkRedirect(`http://${states.province}.1778.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
-	// 	return text.match(/^http:\/\/(\w+)\./)[1]
-	// }).catch(e => {
-	// 	spinner.fail(`[number-hunter]: 检测域名失败！`)
-	// 	throw e
-	// })
+	let domainWord = await samael.checkRedirect(`http://${states.province}.1778.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
+		return text.match(/^http:\/\/(\w+)\./)[1]
+	}).catch(e => {
+		spinner.fail(`[number-hunter]: 检测域名失败！`)
+		throw e
+	})
 	spinner.info(`[number-hunter]: 检测域名成功！`)
-	urlTemplate = urlTemplate.replace(/^http:\/\/\w+\./, `http://${states.province}.`)
+	urlTemplate = urlTemplate.replace(/^http:\/\/\w+\./, `http://${domainWord}.`)
 	console.log(`[number-hunter]: urlTemplate '${urlTemplate}'`)
 	spinner = ora('[number-hunter]: 正在探测页数...').start()
 	// let border = await rbb.find(1, 99999, generateDetector(urlTemplate)) 两种探测方式
