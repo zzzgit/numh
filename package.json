@@ -1,10 +1,11 @@
 {
   "name": "numh",
-  "version": "1.0.27",
+  "version": "1.0.30",
   "description": "number hunter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "foo": "node sdfs.js"
   },
   "bin": {
     "numh": "./bin/main.js"
@@ -19,7 +20,8 @@
     "node-fetch": "^2.2.0",
     "ora": "^3.0.0",
     "perloin": "^1.0.5",
-    "samael": "^1.0.2"
+    "samael": "^1.0.2",
+    "update-notifier": "^3.0.0"
   },
   "repository": {
     "type": "git",

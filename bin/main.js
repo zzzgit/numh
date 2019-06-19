@@ -5,9 +5,13 @@ const area = require("./data/area.js")
 const tsps = require("./data/tsp.js")
 const pkgs = require("./data/pkgs.js")
 const prefixs = require("./data/prefix.js")
+const updateNotifier = require('update-notifier')
 
-const { version } = require('../package.json')
-console.log(`\r\n[numh][version]: ${version}\r\n`)
+const pkg = require('../package.json')
+updateNotifier({ pkg }).notify()
+
+// const { version } = require('../package.json')
+// console.log(`\r\n[numh][version]: ${version}\r\n`)
 
 let provs = []
 for (let key in area) {
