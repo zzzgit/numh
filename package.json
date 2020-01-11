@@ -1,6 +1,6 @@
 {
   "name": "numh",
-  "version": "1.0.45",
+  "version": "1.0.48",
   "description": "number hunter",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "node-fetch": "^2.2.0",
     "ora": "^3.0.0",
     "perloin": "^1.0.5",
-    "samael": "^1.0.2",
+    "samael": "^1.0.6",
     "update-notifier": "^3.0.0"
   },
   "repository": {
