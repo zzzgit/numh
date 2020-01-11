@@ -102,8 +102,9 @@ const transferFile = async (file) => {
 
 
 const boot = async (states) => {
-	// 51.asp?  numcategory=0   birth=    
-	let urlTemplate = `http://${states.province}.1778.com/io/5.asp?cnt=50&page_no={pageNo}&lanmu=${states.tsp}`
+	// 51.asp?  numcategory=0   birth=  
+	const secondLevelDomain = "haoma"  
+	let urlTemplate = `http://${states.province}.${secondLevelDomain}.com/io/5.asp?cnt=50&page_no={pageNo}&lanmu=${states.tsp}`
 	if (!states.isSpecial) {
 		urlTemplate += `&dis=${states.city}`
 	}
@@ -116,19 +117,21 @@ const boot = async (states) => {
 	if (states.prefix!==-1) {
 		urlTemplate += `&haoduan=${states.prefix}`
 	}
-	let spinner = ora('[number-hunter]: 正在探测域名映射...').start()
-	let domainWord = await samael.checkRedirect(`http://${states.province}.1778.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
+	let spinner = ora('[number-hunter]: 正在探测三級域名映射...').start()
+	let thirdLevelDomain = await samael.checkRedirect(`http://${states.province}.${secondLevelDomain}.com/${states.isSpecial ? "" : "?dis=" + states.city}`).then(text => {
 		return text.match(/^http:\/\/(\w+)\./)[1]
 	}).catch(e => {
-		spinner.fail(`[number-hunter]: 检测域名失败！`)
+		spinner.fail(`[number-hunter]: 检测三級域名失败！`)
 		throw e
 	})
-	spinner.info(`[number-hunter]: 检测域名成功！`)
-	urlTemplate = urlTemplate.replace(/^http:\/\/\w+\./, `http://${domainWord}.`)
+	spinner.info(`[number-hunter]: 检测三級域名成功！`)
+	urlTemplate = urlTemplate.replace(/^http:\/\/\w+\./, `http://${thirdLevelDomain}.`)
 	console.log(`[number-hunter]: urlTemplate '${urlTemplate}'`)
 	spinner = ora('[number-hunter]: 正在探测页数...').start()
 	// let border = await rbb.find(1, 99999, generateDetector(urlTemplate)) 两种探测方式
-	let border = await samael.fetch(template.parse(urlTemplate).expand({ pageNo: 1 })).then(text => {
+	let border = await samael.fetch(template.parse(urlTemplate).expand({ pageNo: 1 }), {
+		'Referer': `http://${thirdLevelDomain}.${secondLevelDomain}.com/xh/?dis=6&lanmu=0`,
+		'Host': `${thirdLevelDomain}.${secondLevelDomain}.com`,}).then(text => {
 		let page = text.replace(/\|.+/, "")
 		return +page || 1
 	}).catch(e => {
