@@ -45,7 +45,7 @@ for (let provCode in areas) {
 	if (item.isSpecial) {
 		let plan = {
 			name: `${provCode}`,
-			urlTemplate: `http://${provCode}.1778.com/xh/?lanmu={tsp}`,
+			urlTemplate: `http://${provCode}.haoma.com/xh/?lanmu={tsp}`,
 			urlPhases: {
 				tsp: {
 					type: perloin.type.iterating,
@@ -60,11 +60,11 @@ for (let provCode in areas) {
 	} else {
 		areas[provCode].children.forEach(city => {
 			lastPlan = lastPlan.then(() => {
-				return samael.checkRedirect(`http://${provCode}.1778.com/xh/?dis=${city.value}&lanmu=${tsp[0].value}`).then(url => url.match(/^http:\/\/(\w+)\./)[1])
+				return samael.checkRedirect(`http://${provCode}.haoma.com/xh/?dis=${city.value}&lanmu=${tsp[0].value}`).then(url => url.match(/^http:\/\/(\w+)\./)[1])
 			}).then((domain) => {
 				let plan = {
 					name: `${domain}.${city.name}`,
-					urlTemplate: `http://${domain}.1778.com/xh/?dis=${city.value}&lanmu={tsp}`,
+					urlTemplate: `http://${domain}.haoma.com/xh/?dis=${city.value}&lanmu={tsp}`,
 					urlPhases: {
 						tsp: {
 							type: perloin.type.iterating,
