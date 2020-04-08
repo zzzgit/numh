@@ -1,6 +1,6 @@
 {
   "name": "numh",
-  "version": "1.0.49",
+  "version": "1.0.59",
   "description": "number hunter",
   "main": "index.js",
   "scripts": {
