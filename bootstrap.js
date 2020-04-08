@@ -13,7 +13,11 @@ const perloin = require("perloin")
 
 
 let run = function (entity, context) {	// 这个函数必须返回promise，不管异步还是同步
-	return samael.fetch(entity.url).then(text => {
+	let url = new URL(entity.url)
+	return samael.fetch(entity.url, {
+		'Referer': url.href,
+		'Host': url.host,
+	}).then(text => {
 		//let text = iconv.decode(text, 'gb2312')
 		let arr = text.split("|")
 		if (!arr.length) {
@@ -47,12 +51,7 @@ let record = (entity, context) => {
 }
 
 async function getHandle(path) {
-	let filehandle
-	try {
-		filehandle = await fsPromises.open(path, 'r')
-	} catch (e) {
-		throw e
-	}
+	let filehandle = await fsPromises.open(path, 'r')
 	return filehandle
 }
 
