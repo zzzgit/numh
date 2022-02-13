@@ -11,17 +11,17 @@
     "numh": "./bin/main.js"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "encoding": "^0.1.12",
-    "excel4node": "^1.7.0",
-    "iconv-lite": "^0.4.24",
-    "inquirer": "^6.2.0",
-    "mkdirp": "^0.5.1",
-    "node-fetch": "^2.2.0",
-    "ora": "^3.0.0",
+    "cheerio": "1.0.0-rc.10",
+    "encoding": "^0.1.13",
+    "excel4node": "^1.7.2",
+    "iconv-lite": "^0.6.3",
+    "inquirer": "^8.2.0",
+    "mkdirp": "^1.0.4",
+    "node-fetch": "^3.2.0",
+    "ora": "^6.0.1",
     "perloin": "^1.0.5",
-    "samael": "^1.0.6",
-    "update-notifier": "^3.0.0"
+    "samael": "^1.0.30",
+    "update-notifier": "^5.1.0"
   },
   "repository": {
     "type": "git",
