@@ -34,7 +34,7 @@ let run = function (entity, context) {	// 这个函数必须返回promise，不�
 			}
 		})
 		context.counter++
-		samael.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter * 50 / 60000) + "." + context.fileName}`), str).catch(err => {
+		samael.appendToFile(path.join(os.homedir(), `Desktop/numh/${Math.floor(context.counter * 50 / 600000) + "." + context.fileName}`), str).catch(err => {
 			if (err) throw err
 		})
 	}).catch(e => {
@@ -138,6 +138,8 @@ const boot = async (states) => {
 		throw e
 	})
 	spinner.info(`[number-hunter]: 一共${border}页，计划约需耗时${samael.formatTimeRange(border * states.interval)}`)
+	let date_tmp = new Date()
+	let timestamp = date_tmp.getSeconds() + "" + date_tmp.getMilliseconds()
 	let plan = {
 		name: `${states.province}.${states.city || "0"}.${states.tsp}.${states.package || "all"}`,
 		urlTemplate: urlTemplate,
@@ -151,27 +153,36 @@ const boot = async (states) => {
 		},
 		interval: states.interval,
 		context: {
-			fileName: `${states.province}.${states.city || "0"}.${states.tsp}.${states.package || "all"}.txt`,
+			fileName: `${states.province}.${states.city || "0"}.${states.tsp}.${states.package || "all"}.${states.price || "價格"}.${timestamp}.txt`,
 			states,
 			counter: 0
 		},
 		execute: run,
 	}
-	perloin.run(plan).then(() => {
-		if (typeof plan === "object"){
-			return null
-		}
-		console.log(`[number-hunter]: 开始转换文件...`)
-		let folder = path.join(os.homedir(), `Desktop/numh/`)
-		return fsPromises.readdir(folder, { encoding: "utf8" }).catch(e => {
-			throw e
-		}).then(files => {
-			files.forEach(file => {
-				if (file.includes("failed.txt") || !file.includes(`.txt`)) {
-					return null
-				}
-				console.log(`[number-hunter]: ${file} --> ${file}.xlsx`)
-				transferFile(path.join(folder, `${file}`))
+	let waiting = (states.timer_interval || 0)*60*60*1000
+	new Promise((resolve) => {
+		console.log(`[number-hunter]: 開始定時...`)
+		setTimeout(() => {
+			resolve()
+		}, waiting)
+	}).then(()=>{
+		console.log(`[number-hunter]: 定時結束`)
+		perloin.run(plan).then(() => {
+			if (typeof plan === "object") {
+				return null
+			}
+			console.log(`[number-hunter]: 开始转换文件...`)
+			let folder = path.join(os.homedir(), `Desktop/numh/`)
+			return fsPromises.readdir(folder, { encoding: "utf8" }).catch(e => {
+				throw e
+			}).then(files => {
+				files.forEach(file => {
+					if (file.includes("failed.txt") || !file.includes(`.txt`)) {
+						return null
+					}
+					console.log(`[number-hunter]: ${file} --> ${file}.xlsx`)
+					transferFile(path.join(folder, `${file}`))
+				})
 			})
 		})
 	})

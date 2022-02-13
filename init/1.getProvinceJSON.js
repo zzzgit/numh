@@ -4,13 +4,13 @@
 
 let provs = {}
 
-let wrapper = $("div.city-list")
-wrapper.children().each(function (index, item) {
-	item = $(item)
+let wrapper = $("div.order-cities")
+wrapper.children(".city-area").each(function (index, item) {
+	item = $(item) 
 	if (index === 0) {	// 直辖市
-		item.children("dd").each(function (index, item) {
-			item = $(item)
-			let matched = item.children("a").eq(0).attr("href").match(/\/\/(\w+)\.haoma/, "$1")
+		item.find(".cities > a.city").each(function (index, item) {
+			item = $(item)  
+			let matched = item.eq(0).attr("href").match(/\/\/(\w+)\.haoma/, "$1")
 			provs[matched[1]] = {
 				name: item.text(),
 				// children: [],

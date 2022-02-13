@@ -77,7 +77,8 @@ inquirer.prompt([
 		message: '选择套餐：',
 		choices: (answers) => {
 			let key = `${answers.province}${answers.isSpecial ? "" : ("." + answers.city)}.${answers.tsp}`
-			return pkgs[key]
+			let result = [{ value: null, name: "全部" }].concat(pkgs[key]||[])
+			return  result
 		},
 		when: (answers) => {
 			if (answers.service !== "th") {
@@ -114,8 +115,30 @@ inquirer.prompt([
 		type: 'input',
 		message: '任务间隔时间（秒）：',
 		default: 1.2,
-		validate: (value) => /^[\d\.]*\d$/.test(value),
+		validate: (value) => /^[\d.]*\d$/.test(value),
 		filter: (value) => +value,
+	},
+	{
+		name: 'timer',
+		type: 'confirm',
+		message: () => {
+			return `现在开始？`
+		},
+		default: true,
+	},
+	{
+		name: 'timer_interval',
+		type: 'input',
+		message: '等待开始时间（小时）：',
+		default: 2,
+		validate: (value) => /^[\d.]*\d$/.test(value),
+		filter: (value) => +value,
+		when: (answers) => {
+			if (answers.timer) {
+				return false
+			}
+			return true
+		}
 	},
 	{
 		name: 'confirm',
