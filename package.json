@@ -21,7 +21,7 @@
     "ora": "^6.0.1",
     "perloin": "^1.0.5",
     "samael": "^1.0.30",
-    "update-notifier": "^5.1.0"
+    "update-notifier": "^6.0.2"
   },
   "repository": {
     "type": "git",
